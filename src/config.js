@@ -1,5 +1,5 @@
 // קריאת site.config.json ונגזרות שלו.
-import config from '../site.config.json';
+import config from '../site.config.json' with { type: 'json' };
 import { isTrue } from './util.js';
 
 export { config };
