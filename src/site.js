@@ -91,7 +91,8 @@ export async function renderPage(env, url, id, { form, status = 200 } = {}) {
 
 /**
  * GET לדף ציבורי עם Cache API.
- * מפתח הקאש כולל את גרסת הקאש מ-D1, ולכן כל שמירה בלוח "מנקה" את כל הדפים.
+ * מפתח הקאש כולל את גרסת הקאש מ-D1 (כל שמירה בלוח "מנקה" את כל הדפים)
+ * ואת מזהה הפריסה (כל פריסה חדשה, למשל שינוי SHOW_CREDIT, מנקה גם היא).
  * הערה: ב-*.workers.dev ה-Cache API לא פעיל, והדף פשוט מרונדר בכל בקשה.
  */
 export async function servePage(request, env, ctx, url) {
@@ -100,7 +101,8 @@ export async function servePage(request, env, ctx, url) {
   if (path !== url.pathname) return Response.redirect(url.origin + path + url.search, 301);
 
   const version = await getCacheVersion(env);
-  const cacheKey = new Request(`${url.origin}/__page/v${version}${path}`, { method: 'GET' });
+  const deployId = env.CF_VERSION_METADATA?.id || 'dev';
+  const cacheKey = new Request(`${url.origin}/__page/${deployId}/v${version}${path}`, { method: 'GET' });
   const cache = caches.default;
   const hit = await cache.match(cacheKey);
   if (hit) return withNoBrowserCache(hit, 'HIT');
