@@ -126,7 +126,7 @@ async function showLogin(message) {
     h(
       'main',
       { class: 'login-wrap' },
-      h('div', { class: 'login-card' }, h('h1', { text: 'כניסה ללוח הניהול' }), banner, form, h('p', { class: 'small muted' }, h('a', { href: '/', text: 'חזרה לאתר' }))),
+      h('div', { class: 'login-card' }, h('div', { class: 'login-mark', 'aria-hidden': 'true', text: ((info.siteName || 'F').trim().charAt(0)) }), h('h1', { text: 'כניסה ללוח הניהול' }), banner, form, h('p', { class: 'small muted' }, h('a', { href: '/', text: 'חזרה לאתר' }))),
     ),
   );
   email.focus();
@@ -150,7 +150,7 @@ function renderShell() {
   navEl = h(
     'nav',
     { class: 'sidenav', id: 'sidenav', 'aria-label': 'תפריט הלוח' },
-    h('div', { class: 'side-brand' }, h('span', { class: 'mark', 'aria-hidden': 'true', text: 'F' }), h('span', { text: boot.values['business.name'] || 'לוח ניהול' })),
+    h('div', { class: 'side-brand' }, h('span', { class: 'mark', 'aria-hidden': 'true', text: (boot.values['business.name'] || 'F').trim().charAt(0) }), h('span', { text: boot.values['business.name'] || 'לוח ניהול' })),
     navList,
     h('div', { class: 'side-foot' }, h('a', { href: '/', target: '_blank', rel: 'noopener', text: 'צפה באתר ↗' }), h('a', { href: '#account', text: boot.user.email })),
   );
