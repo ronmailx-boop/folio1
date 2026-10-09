@@ -1,0 +1,67 @@
+# תצוגה מקדימה סטטית ב-GitHub Pages, עד שהאתר יוקם ב-Cloudflare.
+# בונה את האתר הציבורי עם נתוני הדמו ומפרסם ב-https://<user>.github.io/<repo>/
+# הטופס ולוח הניהול לא עובדים כאן (צריכים את ה-Worker).
+# אחרי ההקמה ב-Cloudflare אפשר לכבות: Actions ← Pages preview ← ⋯ ← Disable workflow.
+name: Pages preview
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: הפעלת Pages (אם אפשר)
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: מסד נתונים מקומי עם נתוני הדמו
+        run: |
+          mkdir -p .wrangler
+          npm run db:local
+
+      - name: הרצת האתר מקומית ובניית עותק סטטי
+        env:
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
+        run: |
+          npx wrangler dev --port 8787 --ip 127.0.0.1 > wrangler-dev.log 2>&1 &
+          for i in $(seq 1 60); do curl -sf -o /dev/null http://127.0.0.1:8787/robots.txt && break; sleep 1; done
+          node scripts/build-static.mjs dist
+          kill %1 || true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
