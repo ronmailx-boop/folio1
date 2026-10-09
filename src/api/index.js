@@ -3,6 +3,7 @@ import { login, logout, getSession, checkOrigin, isJson, changePassword, isDemoU
 import { isDemo, config } from '../config.js';
 import { json, jsonError } from '../util.js';
 import { bootstrap, saveSettings } from './settings.js';
+import { getSettings } from '../db.js';
 import { servicesApi, galleryApi } from './items.js';
 import { upload } from './upload.js';
 import { messagesApi } from './messages.js';
@@ -25,7 +26,7 @@ export async function handleApi(request, env, ctx, url) {
       demoEmail: demo ? env.DEMO_EMAIL || 'demo@folio1.app' : undefined,
       // פרטי הדמו פומביים בכוונה (רק כש-DEMO_MODE=true)
       demoPassword: demo ? env.DEMO_PASSWORD || '' : undefined,
-      siteName: config.siteName,
+      siteName: (await getSettings(env))['business.name'] || config.siteName,
     });
   }
   if (pathname === '/api/login' && method === 'POST') {
