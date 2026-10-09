@@ -2,7 +2,7 @@
 // שימוש:
 //   node scripts/ci-resources.mjs --create   (setup.yml: יוצר משאבים חסרים)
 //   node scripts/ci-resources.mjs            (deploy.yml: אם אין משאבים, מדפיס הודעה ומסמן found=false)
-// משתנה סביבה אופציונלי: CUSTOM_DOMAIN (למשל folio1.vplusstudio.app) מוסיף מסלול Custom Domain.
+// משתנה סביבה אופציונלי: CUSTOM_DOMAIN (למשל folio1.vplusstudio.app) גובר על שורת ה-routes ב-wrangler.toml.
 import { readFileSync, writeFileSync, appendFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 
@@ -71,7 +71,8 @@ toml = toml.replace(/database_id\s*=\s*"[^"]*"/, `database_id = "${dbId}"`);
 const domain = (process.env.CUSTOM_DOMAIN || '').trim();
 if (domain) {
   if (!/^[a-z0-9.-]+\.[a-z]{2,}$/i.test(domain)) fail(`CUSTOM_DOMAIN לא תקין: ${domain}`);
-  toml = toml.replace(/^# @CUSTOM_DOMAIN_ROUTE@.*$/m, `routes = [ { pattern = "${domain}", custom_domain = true } ]`);
+  const route = `routes = [ { pattern = "${domain}", custom_domain = true } ]`;
+  toml = /^routes\s*=.*$/m.test(toml) ? toml.replace(/^routes\s*=.*$/m, route) : toml.replace(/^(workers_dev\s*=.*)$/m, `$1\n${route}`);
   console.log(`Custom Domain: ${domain}`);
 }
 writeFileSync(tomlPath, toml);
