@@ -87,7 +87,7 @@ export const DEMO_IMAGES = {
   tablet: pexels(9414330), // A Person Drawing on a Graphics Tablet
   profileDark: pexels(19303043), // Woman in a Dark Room Looking Up in Profile
   brand: pexels(7598017), // Pictures of Business Brand and Design
-  neonWoman: pexels(12230081), // Portrait of a Woman in Neon Light
+  nightCity: pexels(18867525), // Night City Street after Rain Illuminated by Colorful Neon Signs Reflecting on a Wet Road
   studioLights: pexels(25526512), // Photography Studio Lighting Equipment
   editing: pexels(7014918), // Anonymous woman editing photo on laptop
   settingLight: pexels(13884541), // Man Setting Video Light for Photo Shoot
@@ -112,7 +112,7 @@ export const DEMO_GALLERY = [
   [I.tablet, 'מעצבת מאיירת על טאבלט גרפי', 'עיצוב בתהליך'],
   [I.profileDark, 'אישה בפרופיל בחדר חשוך עם אור צד', 'פורטרט באור צד'],
   [I.brand, 'חומרי מיתוג ועיצוב לעסק', 'מיתוג'],
-  [I.neonWoman, 'אישה בתאורת ניאון', 'לילה בעיר'],
+  [I.nightCity, 'רחוב עירוני בלילה אחרי גשם, שלטי ניאון משתקפים בכביש הרטוב', 'לילה בעיר'],
   [I.studioLights, 'ציוד תאורה בסטודיו צילום', 'הסטודיו שלנו'],
 ];
 
