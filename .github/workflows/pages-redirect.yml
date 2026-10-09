@@ -1,0 +1,58 @@
+# GitHub Pages: הפניה לאתר האמיתי ב-Cloudflare.
+# התצוגה המקדימה הסטטית כובתה אחרי ההקמה. מי שנכנס לכתובת הישנה ב-github.io מועבר לאתר.
+# רץ רק ידנית (Actions ← Pages redirect ← Run workflow), למשל אם כתובת האתר משתנה.
+name: Pages redirect
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'לאן להפנות'
+        type: string
+        default: 'https://folio1.ronmailx.workers.dev'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: דף הפניה
+        env:
+          TARGET: ${{ inputs.target }}
+        run: |
+          case "$TARGET" in https://*) ;; *) echo "::error::הכתובת חייבת להתחיל ב-https://"; exit 1;; esac
+          mkdir dist
+          cat > dist/index.html <<HTML
+          <!doctype html>
+          <html lang="he" dir="rtl">
+          <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <meta name="robots" content="noindex">
+          <meta http-equiv="refresh" content="0; url=$TARGET">
+          <link rel="canonical" href="$TARGET">
+          <title>האתר עבר</title>
+          </head>
+          <body>
+          <p>האתר עבר לכתובת חדשה: <a href="$TARGET">$TARGET</a></p>
+          </body>
+          </html>
+          HTML
+          cp dist/index.html dist/404.html
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - id: deployment
+        uses: actions/deploy-pages@v4

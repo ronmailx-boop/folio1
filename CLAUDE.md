@@ -7,10 +7,11 @@
 
 ## מצב נוכחי
 כל 9 השלבים מהפרומט המקורי הושלמו ונבדקו מקומית (`wrangler dev`, D1 ו-R2 מקומיים, Playwright).
-**עדיין לא נפרס ל-Cloudflare אמיתי**: צריך ש-Ron יוסיף Secrets ויריץ `setup.yml` (ראו README).
+**פרוס ב-Cloudflare:** https://folio1.ronmailx.workers.dev (לוח: `/admin/`). D1 `folio1-db`, R2 `folio1-media`. הדומיין `folio1.vplusstudio.app` עוד לא חובר (צריך משתנה `CUSTOM_DOMAIN` והרצה חוזרת של Setup).
+- ב-API Token חייבת להיות הרשאת Account ← D1 ← Edit (התבנית "Edit Cloudflare Workers" לא כוללת אותה), ו-R2 צריך הפעלה חד-פעמית בדשבורד (דורש אמצעי תשלום, גם בתוכנית החינמית).
 
-## תצוגה מקדימה ב-GitHub Pages (זמני)
-`pages-preview.yml` מריץ `wrangler dev` ב-CI עם נתוני הדמו, ו-`scripts/build-static.mjs` שומר עותק סטטי של הדפים הציבוריים: מוסיף את base path (`/folio1`), מחליף את הטופס בהודעה ומוסיף פס "תצוגה מקדימה". הסיבה: ל-Ron אין עדיין Secrets של Cloudflare, והקונטיינר של Claude לא יכול לפרוס Worker (אין טוקן, וה-MCP של Cloudflare לא כולל פריסה). אחרי ההקמה ב-Cloudflare אפשר לכבות את ה-workflow.
+## GitHub Pages
+התצוגה המקדימה הסטטית (שהייתה בשימוש לפני ההקמה ב-Cloudflare) כובתה. `pages-redirect.yml` (ידני בלבד) מפרסם ב-`ronmailx-boop.github.io/folio1` דף שמפנה ל-`https://folio1.ronmailx.workers.dev`.
 
 ## ארכיטקטורה (סגורה)
 - Worker אחד (`src/index.js`) + D1 (`DB`) + R2 (`MEDIA`) + Static Assets (`public/`, binding `ASSETS`).
