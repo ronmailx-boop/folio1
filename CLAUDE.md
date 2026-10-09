@@ -13,6 +13,9 @@
 ## GitHub Pages
 התצוגה המקדימה הסטטית (שהייתה בשימוש לפני ההקמה ב-Cloudflare) כובתה. `pages-redirect.yml` (ידני בלבד) מפרסם ב-`ronmailx-boop.github.io/folio1` דף שמפנה לאתר (`https://folio1.vplusstudio.app`).
 
+## עיצוב
+כיוון "לילה" (ב' מתוך 3 ב-https://claude.ai/artifact/4Qu7vBPShpbogqky1NTVt2): רקע כהה `#0d0a18`, Heebo 300–900, כותרות ענק. צבע ההדגשה `--accent` נגזר בגוון בהיר מהצבע הראשי (`color-mix(... 55%, #fff)`), כך שכל צבע שנבחר בלוח קריא על הרקע הכהה. דף הבית: תגית זמינות, כותרת בשני צבעים (`home.hero.title` + `home.hero.title_accent`), פס של 3 התמונות הראשונות בגלריה, פס נתונים (`home.featureN.stat`), שירותים בפריסת בנטו (הראשון גדול), גלריה (תמונות 4–9) וגוש CTA בצבע ההדגשה. אין `style=""` בתבניות (CSP).
+
 ## ארכיטקטורה (סגורה)
 - Worker אחד (`src/index.js`) + D1 (`DB`) + R2 (`MEDIA`) + Static Assets (`public/`, binding `ASSETS`).
 - JS רגיל, ES modules, בלי build. התלות היחידה: `wrangler` (devDependency).

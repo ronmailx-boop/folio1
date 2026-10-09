@@ -3,7 +3,7 @@ import { config } from '../config.js';
 import { esc, mediaUrl, safeUrl, waNumber, isTrue, paragraphs } from '../util.js';
 import { ICONS } from './icons.js';
 
-const FONT_URL = 'https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap';
+const FONT_URL = 'https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&display=swap';
 
 /**
  * @param {object} ctx  { env, url, settings, cacheVersion }
@@ -34,7 +34,7 @@ ${description ? `<meta name="description" content="${esc(description)}">` : ''}
 ${description ? `<meta property="og:description" content="${esc(description)}">` : ''}
 <meta property="og:url" content="${esc(canonical)}">
 ${ogImage ? `<meta property="og:image" content="${esc(url.origin + mediaUrl(ogImage))}">` : ''}
-<meta name="theme-color" content="${esc(s['brand.primary_color'] || config.defaultPrimaryColor)}">
+<meta name="theme-color" content="#0d0a18">
 ${page.noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -73,6 +73,7 @@ function header(ctx, current, name, logo) {
 <a class="brand" href="/" aria-label="${esc(name)} – דף הבית">${brand}</a>
 <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="sr-only">תפריט</span><span class="bars" aria-hidden="true"></span></button>
 <nav id="site-nav" class="site-nav" aria-label="תפריט ראשי"><ul>${links}</ul></nav>
+<a class="btn btn-primary header-cta" href="/contact">דברו איתנו</a>
 </div>
 </header>`;
 }
@@ -94,24 +95,26 @@ function footer(ctx, name) {
     .join('');
   const showCredit = env.SHOW_CREDIT === undefined || isTrue(env.SHOW_CREDIT);
   const year = new Date().getFullYear();
+  const hours = s['contact.hours'];
   return `<footer class="site-footer">
 <div class="container footer-grid">
 <div>
 <p class="footer-name">${esc(name)}</p>
 ${paragraphs(s['footer.text'])}
+${social ? `<ul class="social">${social}</ul>` : ''}
 </div>
 <div>
+<p class="footer-title">יצירת קשר</p>
 <ul class="footer-contact">
 ${phone ? `<li>${ICONS.phone}<a href="tel:${esc(phone.replace(/[^\d+]/g, ''))}">${esc(phone)}</a></li>` : ''}
 ${email ? `<li>${ICONS.mail}<a href="mailto:${esc(email)}">${esc(email)}</a></li>` : ''}
 ${s['contact.address'] ? `<li>${ICONS.pin}<span>${esc(s['contact.address'])}</span></li>` : ''}
 </ul>
-${social ? `<ul class="social">${social}</ul>` : ''}
 </div>
+${hours ? `<div class="footer-hours"><p class="footer-title">שעות פעילות</p>${paragraphs(hours)}</div>` : ''}
 </div>
 <div class="container footer-bottom">
-<p>© ${year} ${esc(name)}. כל הזכויות שמורות.</p>
-<p><a href="/accessibility">הצהרת נגישות</a></p>
+<p>© ${year} ${esc(name)} · <a href="/accessibility">הצהרת נגישות</a></p>
 ${showCredit ? `<p class="credit"><a href="${esc(config.creditUrl)}" rel="noopener" target="_blank">${esc(config.creditText)}</a></p>` : ''}
 </div>
 </footer>`;

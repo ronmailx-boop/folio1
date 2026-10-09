@@ -16,16 +16,32 @@ function img(key, alt, { width = 800, height = 600, cls = '', eager = false } = 
   return `<img src="${esc(mediaUrl(key))}" alt="${esc(alt)}" width="${width}" height="${height}"${cls ? ` class="${cls}"` : ''} ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">`;
 }
 
-function serviceCard(svc, headingLevel = 3) {
+function serviceCard(svc, { headingLevel = 3, big = false } = {}) {
   const h = `h${headingLevel}`;
-  return `<article class="card service-card">
-${svc.image_key ? `<div class="card-media">${img(svc.image_key, '', { width: 800, height: 600 })}</div>` : ''}
-<div class="card-body">
-<${h} class="card-title">${esc(svc.title)}</${h}>
-${paragraphs(svc.description)}
-${svc.price_text ? `<p class="price">${esc(svc.price_text)}</p>` : ''}
+  const media = svc.image_key ? `<div class="card-media">${img(svc.image_key, '', { width: 800, height: 600 })}</div>` : '';
+  const price = svc.price_text ? `<p class="price">${esc(svc.price_text)}</p>` : '';
+  if (big) {
+    return `<article class="card svc svc-big">
+${media}
+<div class="svc-foot">
+<div><${h}>${esc(svc.title)}</${h}><div class="desc">${paragraphs(svc.description)}</div></div>
+${price}
 </div>
 </article>`;
+  }
+  return `<article class="card svc">
+${media}
+<${h}>${esc(svc.title)}</${h}>
+<div class="desc">${paragraphs(svc.description)}</div>
+${price}
+</article>`;
+}
+
+/** שירותים בפריסת "בנטו": הראשון גדול (אם יש לו תמונה), השאר כרטיסים רגילים. */
+function bento(services, headingLevel = 3) {
+  return `<div class="bento">${services
+    .map((x, i) => serviceCard(x, { headingLevel, big: i === 0 && !!x.image_key && services.length > 2 }))
+    .join('')}</div>`;
 }
 
 function galleryGrid(items) {
@@ -52,50 +68,76 @@ ${intro ? `<div class="lead">${paragraphs(intro)}</div>` : ''}
 // ---------------- דפים ----------------
 
 export function homePage(s, services, gallery) {
-  const features = [1, 2, 3]
+  const stats = [1, 2, 3]
     .map((n, i) => {
-      const t = s[`home.feature${n}.title`];
-      if (!t) return '';
-      const icon = [ICONS.star, ICONS.layers, ICONS.heart][i];
-      return `<li class="feature"><span class="feature-icon">${icon}</span><h3>${esc(t)}</h3>${paragraphs(s[`home.feature${n}.text`])}</li>`;
+      const title = s[`home.feature${n}.title`];
+      if (!title) return '';
+      const stat = s[`home.feature${n}.stat`];
+      const top = stat
+        ? `<span class="stat-num"><bdi>${esc(stat)}</bdi></span>`
+        : `<span class="stat-icon" aria-hidden="true">${[ICONS.star, ICONS.layers, ICONS.heart][i]}</span>`;
+      return `<li class="stat">${top}<h3>${esc(title)}</h3>${paragraphs(s[`home.feature${n}.text`])}</li>`;
     })
     .join('');
   const cta = safeUrl(s['home.hero.cta_link']) || '/contact';
+  // שלוש התמונות הראשונות בפס שמתחת לכותרת, והשאר בגלריה (אם יש מספיק)
+  const strip = gallery.slice(0, 3);
+  const grid = gallery.length > 3 ? gallery.slice(3, 9) : gallery;
+  const wa = waNumber(s['contact.whatsapp']);
+  const accent = s['home.hero.title_accent'];
   const body = `
 <section class="hero">
-<div class="container hero-inner">
-<h1>${esc(s['home.hero.title'])}</h1>
-${s['home.hero.subtitle'] ? `<div class="hero-sub">${paragraphs(s['home.hero.subtitle'])}</div>` : ''}
-${s['home.hero.cta_text'] ? `<p><a class="btn btn-light btn-lg" href="${esc(cta)}">${esc(s['home.hero.cta_text'])}</a></p>` : ''}
+<div class="container">
+${s['home.hero.badge'] ? `<p class="badge"><span class="badge-dot" aria-hidden="true"></span>${esc(s['home.hero.badge'])}</p>` : ''}
+<h1>${esc(s['home.hero.title'])}${accent ? `<br><span class="accent">${esc(accent)}</span>` : ''}</h1>
+<div class="hero-row">
+${s['home.hero.subtitle'] ? `<div class="hero-sub">${paragraphs(s['home.hero.subtitle'])}</div>` : '<div></div>'}
+<div class="hero-actions">
+${s['home.hero.cta_text'] ? `<a class="btn btn-light btn-lg" href="${esc(cta)}">${esc(s['home.hero.cta_text'])}</a>` : ''}
+${gallery.length ? '<a class="btn btn-ghost btn-lg" href="/gallery">לגלריה</a>' : ''}
+</div>
+</div>
 </div>
 </section>
-${features ? `<section class="features" aria-label="היתרונות שלנו"><div class="container"><ul class="feature-list">${features}</ul></div></section>` : ''}
+${
+  strip.length === 3
+    ? `<div class="container"><ul class="hero-strip" aria-label="מהעבודות שלנו">${strip
+        .map((g, i) => `<li>${img(g.image_key, g.alt_text, { width: 800, height: 600, eager: i === 0 })}</li>`)
+        .join('')}</ul></div>`
+    : ''
+}
+${stats ? `<section class="stats" aria-label="היתרונות שלנו"><div class="container"><ul class="stats-list">${stats}</ul></div></section>` : ''}
 ${
   services.length
     ? `<section class="section"><div class="container">
 <div class="section-head"><h2>${esc(s['home.services.title'])}</h2><a href="/services" class="more">לכל השירותים <span aria-hidden="true">←</span></a></div>
-<div class="card-grid">${services.map((x) => serviceCard(x)).join('')}</div>
+${bento(services)}
 </div></section>`
     : ''
 }
 ${
-  gallery.length
-    ? `<section class="section section-alt"><div class="container">
+  grid.length
+    ? `<section class="section section-tight"><div class="container">
 <div class="section-head"><h2>${esc(s['home.gallery.title'])}</h2><a href="/gallery" class="more">לגלריה המלאה <span aria-hidden="true">←</span></a></div>
-${galleryGrid(gallery)}
+${galleryGrid(grid)}
 </div></section>`
     : ''
 }
 ${
   s['home.cta.title']
-    ? `<section class="cta-band"><div class="container">
+    ? `<section class="cta-wrap"><div class="container"><div class="cta-block">
+<div>
 <h2>${esc(s['home.cta.title'])}</h2>
 ${paragraphs(s['home.cta.text'])}
-<p><a class="btn btn-light btn-lg" href="/contact">${esc(s['home.cta.button'])}</a></p>
-</div></section>`
+</div>
+<div class="cta-actions">
+<a class="btn btn-dark btn-lg" href="/contact">${esc(s['home.cta.button'])}</a>
+${wa ? `<a class="btn btn-outline-dark btn-lg" href="https://wa.me/${wa}" target="_blank" rel="noopener">וואטסאפ${s['contact.whatsapp'] ? ` ${esc(s['contact.whatsapp'])}` : ''}</a>` : ''}
+</div>
+</div></div></section>`
     : ''
 }`;
-  return { id: 'home', ...seo(s, 'home'), body };
+  return { id: 'home', ...seo(s, 'home'), body, image: strip[0]?.image_key };
 }
 
 export function aboutPage(s) {
@@ -111,7 +153,7 @@ ${image ? `<div class="about-media">${img(image, s['about.image_alt'] || '', { e
 export function servicesPage(s, services) {
   const body = `${pageHead(s['services.title'], s['services.intro'])}
 <section class="section"><div class="container">
-${services.length ? `<div class="card-grid">${services.map((x) => serviceCard(x, 2)).join('')}</div>` : '<p class="empty">בקרוב יעלו כאן השירותים שלנו.</p>'}
+${services.length ? bento(services, 2) : '<p class="empty">בקרוב יעלו כאן השירותים שלנו.</p>'}
 </div></section>`;
   return { id: 'services', ...seo(s, 'services', s['services.title']), body };
 }

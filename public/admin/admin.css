@@ -138,9 +138,9 @@ legend { font-weight: 800; padding: 0 6px; }
 .color-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 .color-row input[type='color'] { width: 56px; height: 46px; padding: 2px; border: 1.5px solid #c9c6dc; border-radius: 12px; background: #fff; cursor: pointer; }
 .color-row input[type='text'] { width: 130px; direction: ltr; text-align: left; }
-.color-preview { display: flex; gap: 10px; align-items: center; margin-top: 10px; padding: 12px; border-radius: 12px; border: 1px solid var(--line); background: #fff; flex-wrap: wrap; }
-.color-preview .sample-btn { padding: 8px 16px; border-radius: 999px; color: #fff; font-weight: 700; }
-.color-preview .sample-band { height: 36px; flex: 1; min-width: 100px; border-radius: 8px; }
+.color-preview { display: flex; gap: 16px; align-items: center; margin-top: 10px; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--line); background: #0d0a18; flex-wrap: wrap; }
+.color-preview .sample-btn { padding: 8px 16px; border-radius: 999px; color: #0d0a18; font-weight: 800; }
+.color-preview .sample-band { font-size: 1.4rem; font-weight: 900; }
 .image-field { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .image-field .thumb { width: 120px; height: 90px; border-radius: 10px; object-fit: cover; background: var(--soft); border: 1px solid var(--line); }
 .thumb-empty { width: 120px; height: 90px; border-radius: 10px; background: var(--soft); border: 1px dashed #c9c6dc; display: grid; place-items: center; color: var(--muted); font-size: 0.85rem; }

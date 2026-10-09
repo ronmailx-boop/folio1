@@ -59,8 +59,8 @@ export async function renderPage(env, url, id, { form, status = 200 } = {}) {
   switch (id) {
     case 'home': {
       const [services, gallery] = await Promise.all([
-        listServices(env, { visibleOnly: true, limit: 3 }),
-        listGallery(env, { visibleOnly: true, limit: 6 }),
+        listServices(env, { visibleOnly: true, limit: 6 }),
+        listGallery(env, { visibleOnly: true, limit: 9 }),
       ]);
       page = pages.homePage(settings, services, gallery);
       break;
