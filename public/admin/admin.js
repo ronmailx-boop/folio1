@@ -423,11 +423,13 @@ function fieldControl(f, value, onInput) {
     const color = h('input', { type: 'color', id, value: value || '#7367f0', 'aria-label': `${f.label} – בורר` });
     const text = h('input', { type: 'text', value: value || '#7367f0', 'aria-label': `${f.label} – קוד צבע`, maxlength: 7, dir: 'ltr', inputmode: 'text' });
     const btnSample = h('span', { class: 'sample-btn', text: 'כפתור לדוגמה' });
-    const band = h('span', { class: 'sample-band' });
+    const band = h('span', { class: 'sample-band', text: 'כותרת מודגשת' });
     const paint = (c) => {
       if (!/^#[0-9a-f]{6}$/i.test(c)) return;
-      btnSample.style.background = `color-mix(in srgb, ${c} 78%, #000)`;
-      band.style.background = `linear-gradient(135deg, ${c}, #7c4ddb)`;
+      // כמו באתר: צבע ההדגשה הוא הגוון הבהיר של הצבע הראשי, על רקע כהה
+      const accent = `color-mix(in srgb, ${c} 55%, #fff)`;
+      btnSample.style.background = accent;
+      band.style.color = accent;
     };
     color.addEventListener('input', () => {
       text.value = color.value;
