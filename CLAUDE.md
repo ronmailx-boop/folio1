@@ -7,11 +7,11 @@
 
 ## מצב נוכחי
 כל 9 השלבים מהפרומט המקורי הושלמו ונבדקו מקומית (`wrangler dev`, D1 ו-R2 מקומיים, Playwright).
-**פרוס ב-Cloudflare:** https://folio1.ronmailx.workers.dev (לוח: `/admin/`). D1 `folio1-db`, R2 `folio1-media`. הדומיין `folio1.vplusstudio.app` עוד לא חובר (צריך משתנה `CUSTOM_DOMAIN` והרצה חוזרת של Setup).
+**פרוס ב-Cloudflare:** https://folio1.vplusstudio.app (וגם https://folio1.ronmailx.workers.dev). לוח: `/admin/`. D1 `folio1-db`, R2 `folio1-media`.
 - ב-API Token חייבת להיות הרשאת Account ← D1 ← Edit (התבנית "Edit Cloudflare Workers" לא כוללת אותה), ו-R2 צריך הפעלה חד-פעמית בדשבורד (דורש אמצעי תשלום, גם בתוכנית החינמית).
 
 ## GitHub Pages
-התצוגה המקדימה הסטטית (שהייתה בשימוש לפני ההקמה ב-Cloudflare) כובתה. `pages-redirect.yml` (ידני בלבד) מפרסם ב-`ronmailx-boop.github.io/folio1` דף שמפנה ל-`https://folio1.ronmailx.workers.dev`.
+התצוגה המקדימה הסטטית (שהייתה בשימוש לפני ההקמה ב-Cloudflare) כובתה. `pages-redirect.yml` (ידני בלבד) מפרסם ב-`ronmailx-boop.github.io/folio1` דף שמפנה לאתר (`https://folio1.vplusstudio.app`).
 
 ## ארכיטקטורה (סגורה)
 - Worker אחד (`src/index.js`) + D1 (`DB`) + R2 (`MEDIA`) + Static Assets (`public/`, binding `ASSETS`).
@@ -28,7 +28,7 @@
 - **הגבלת קצב:** טבלת `rate_limits` עם חלון קבוע. התחברות: 5 כישלונות ל-15 דק' לכל IP ולכל מייל (הניסיון השישי מקבל 429). טופס: 5 לשעה לכל IP. ה-IP נשמר מגובב עם `HASH_SALT` (סוד שנוצר ב-setup).
 - **תמונות:** דחיסה בדפדפן (WebP, 1600px, 0.82, נפילה ל-JPEG, הקטנה חוזרת אם עדיין גדול). בשרת: בדיקת magic bytes, מפתח `u/<32hex>.<ext>`. תמונות דמו הן קבצים סטטיים `public/demo/*.svg` עם מפתח `demo/...` (לא ב-R2, לא נמחקות).
 - **משאבים ב-CI:** `scripts/ci-resources.mjs` מאתר/יוצר D1 ו-R2 לפי השמות ב-`wrangler.toml` ומחליף את `database_id` בזמן ריצה בלבד (לא נשמר בריפו). לא השתמשתי בהקצאה האוטומטית של wrangler כי מיגרציות `--remote` צריכות מזהה ידוע, והשיטה המפורשת צפויה יותר.
-- **דומיין:** משתנה GitHub `CUSTOM_DOMAIN` מחליף את שורת ההערה `# @CUSTOM_DOMAIN_ROUTE@` ב-`routes = [...]`. כך פריסה לא נכשלת לפני שהדומיין מוכן.
+- **דומיין:** `routes = [ { pattern = "folio1.vplusstudio.app", custom_domain = true } ]` ב-`wrangler.toml`, כך שכל פריסה מחברת אותו. משתנה GitHub `CUSTOM_DOMAIN` גובר עליו. ללקוח חדש: להחליף או למחוק את השורה עד שהדומיין מוכן, אחרת הפריסה נכשלת. הטוקן מתבנית "Edit Cloudflare Workers" (עם Zone Workers Routes על הדומיין) הספיק.
 - **סיסמת דמו:** סוד `DEMO_PASSWORD` (פומבי בכוונה, מוצג ב-`/api/public-info` רק כש-`DEMO_MODE=true`). אם חסר, setup מייצר אחד.
 - **איפוס דמו:** Cron Trigger ב-Worker (`0 1 * * *`) + workflow ידני `demo-reset.yml`. ה-handler לא עושה כלום כש-`DEMO_MODE` אינו `true`.
 - **seed:** `src/seed.js` מחזיר `{sql, params}[]`. ה-Worker מריץ ב-`DB.batch`, וה-CI הופך ל-SQL עם `scripts/sql.mjs`.

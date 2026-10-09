@@ -14,6 +14,7 @@
   - [ ] `name` = שם ייחודי, למשל `dana-studio`. (זה גם החלק הראשון בכתובת `workers.dev`.)
   - [ ] `database_name` = למשל `dana-studio-db`.
   - [ ] `bucket_name` = למשל `dana-studio-media` (אותיות קטנות, ספרות ומקפים בלבד).
+  - [ ] `routes`: להחליף `folio1.vplusstudio.app` בדומיין של הלקוח, או למחוק את השורה עד שהדומיין מוכן ב-Cloudflare (אחרת הפריסה נכשלת).
   - [ ] `DEMO_MODE = "false"` (חשוב! אחרת פרטי הכניסה מוצגים בדף הכניסה והאתר מתאפס כל לילה).
   - [ ] `SHOW_CREDIT`: להשאיר `"true"`, או `"false"` אם סוכם עם הלקוח על הסרת הקרדיט.
 - [ ] `site.config.json`:
