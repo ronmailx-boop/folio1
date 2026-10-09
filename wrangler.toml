@@ -6,7 +6,11 @@ name = "folio1"
 main = "src/index.js"
 compatibility_date = "2025-09-01"
 workers_dev = true
-# @CUSTOM_DOMAIN_ROUTE@  (שורה זו מוחלפת אוטומטית במסלול Custom Domain כשמוגדר משתנה CUSTOM_DOMAIN ב-GitHub)
+# דומיין מותאם (Custom Domain). Cloudflare יוצר לבד את רשומת ה-DNS ואת תעודת ה-SSL.
+# הדומיין הראשי (vplusstudio.app) חייב להיות באותו חשבון Cloudflare.
+# ללקוח חדש: להחליף לדומיין שלו, או למחוק את השורה עד שהדומיין מוכן (ואז האתר יעבוד רק ב-workers.dev).
+# משתנה GitHub בשם CUSTOM_DOMAIN, אם מוגדר, גובר על השורה הזו.
+routes = [ { pattern = "folio1.vplusstudio.app", custom_domain = true } ]
 
 [assets]
 directory = "./public"

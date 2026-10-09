@@ -9,7 +9,7 @@ on:
       target:
         description: 'לאן להפנות'
         type: string
-        default: 'https://folio1.ronmailx.workers.dev'
+        default: 'https://folio1.vplusstudio.app'
 
 permissions:
   contents: read

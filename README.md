@@ -57,7 +57,7 @@
 
 | שם | מה זה |
 |---|---|
-| `CUSTOM_DOMAIN` | הדומיין של האתר, למשל `folio1.vplusstudio.app` |
+| `CUSTOM_DOMAIN` | לא חובה: גובר על הדומיין שמוגדר ב-`routes` ב-`wrangler.toml` |
 
 ### שלב 3: הרצת ההקמה
 
@@ -68,8 +68,8 @@
 
 ### דומיין
 
-- **אם `vplusstudio.app` כבר מנוהל ב-Cloudflare שלכם:** הוסיפו משתנה `CUSTOM_DOMAIN` = `folio1.vplusstudio.app` (שלב 2), והריצו שוב את **Setup**. Cloudflare יוצר את רשומת ה-DNS ואת תעודת ה-SSL לבד (עד כמה דקות).
-- **אם הדומיין עדיין לא ב-Cloudflare:** האתר עובד בכתובת `https://folio1.<השם-שלכם>.workers.dev`. כשהדומיין יעבור ל-Cloudflare (Add a site ← החלפת Nameservers אצל רשם הדומיין), הוסיפו את `CUSTOM_DOMAIN` והריצו שוב את Setup.
+- הדומיין מוגדר בשורת `routes` ב-`wrangler.toml` (כרגע `folio1.vplusstudio.app`). כל פריסה מחברת אותו, ו-Cloudflare יוצר לבד את רשומת ה-DNS ואת תעודת ה-SSL (עד כמה דקות). הדומיין הראשי חייב להיות באותו חשבון Cloudflare.
+- **אם הדומיין עדיין לא ב-Cloudflare:** מחקו את שורת `routes` כדי שהפריסה לא תיכשל. האתר יעבוד בכתובת `https://<name>.<השם-שלכם>.workers.dev`. כשהדומיין יעבור ל-Cloudflare (Add a site ← החלפת Nameservers אצל רשם הדומיין), החזירו את השורה.
 - אם זו הפעם הראשונה שלכם עם Workers, ייתכן ש-Cloudflare יבקש לבחור תת-דומיין ל-`workers.dev`: בדשבורד ← Workers & Pages ← בחרו שם, והריצו שוב את Setup.
 
 ---
