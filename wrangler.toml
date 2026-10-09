@@ -1,0 +1,37 @@
+# Folio1 – הגדרות Cloudflare Worker
+# ללקוח חדש: שנה את name, database_name ו-bucket_name (ראה NEW_CLIENT.md).
+# את database_id אין צורך למלא: ה-workflows ב-GitHub Actions ממלאים אותו בזמן ריצה.
+
+name = "folio1"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+workers_dev = true
+# @CUSTOM_DOMAIN_ROUTE@  (שורה זו מוחלפת אוטומטית במסלול Custom Domain כשמוגדר משתנה CUSTOM_DOMAIN ב-GitHub)
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+[vars]
+# אתר דמו: "true". אתר של לקוח אמיתי: "false".
+DEMO_MODE = "true"
+# סימן המים "נבנה על ידי VPlus Studio". רק הבעלים משנה, לא מלוח הניהול.
+SHOW_CREDIT = "true"
+DEMO_EMAIL = "demo@folio1.app"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "folio1-db"
+database_id = "00000000-0000-0000-0000-000000000000"
+migrations_dir = "migrations"
+
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "folio1-media"
+
+# איפוס דמו לילי (01:00 UTC). באתר שאינו דמו ה-handler פשוט לא עושה כלום.
+[triggers]
+crons = ["0 1 * * *"]
+
+[observability]
+enabled = true
