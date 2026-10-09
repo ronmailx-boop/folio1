@@ -192,6 +192,7 @@ export function pref(key, value) {
 
 export function mediaUrl(key) {
   if (!key) return '';
+  if (key.startsWith('https://')) return key;
   return key.startsWith('demo/') ? '/' + key : '/media/' + key;
 }
 

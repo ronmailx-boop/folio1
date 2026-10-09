@@ -4,6 +4,18 @@
   'use strict';
   document.documentElement.classList.add('js');
 
+  // תמונה מקושרת ממאגר חיצוני שלא נטענה (נמחקה במקור, תקלה ברשת): מציגים במקומה איור דמו ניטרלי
+  document.addEventListener(
+    'error',
+    (e) => {
+      const img = e.target;
+      if (img.tagName !== 'IMG' || img.dataset.fallback || !/^https:\/\/images\./.test(img.src)) return;
+      img.dataset.fallback = '1';
+      img.src = '/demo/about.svg';
+    },
+    true,
+  );
+
   // ---------- תפריט המבורגר ----------
   const header = document.querySelector('.site-header');
   const toggle = document.querySelector('.nav-toggle');

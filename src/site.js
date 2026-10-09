@@ -3,7 +3,7 @@ import { config } from './config.js';
 import { getSettings, listServices, listGallery, getCacheVersion } from './db.js';
 import { layout } from './render/layout.js';
 import * as pages from './render/pages.js';
-import { esc, isHexColor, SECURITY_HEADERS } from './util.js';
+import { esc, isHexColor, SECURITY_HEADERS, EXTERNAL_IMAGE_HOSTS } from './util.js';
 
 const PAGE_ROUTES = {
   '/': 'home',
@@ -21,7 +21,7 @@ export function publicCsp(env) {
     `script-src 'self'${ts}`,
     "style-src 'self' https://fonts.googleapis.com",
     'font-src https://fonts.gstatic.com',
-    "img-src 'self' data:",
+    `img-src 'self' data: ${EXTERNAL_IMAGE_HOSTS.join(' ')}`,
     "connect-src 'self'",
     `frame-src${ts || " 'none'"}`,
     "form-action 'self'",

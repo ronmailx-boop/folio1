@@ -33,7 +33,7 @@ ${description ? `<meta name="description" content="${esc(description)}">` : ''}
 <meta property="og:title" content="${esc(title)}">
 ${description ? `<meta property="og:description" content="${esc(description)}">` : ''}
 <meta property="og:url" content="${esc(canonical)}">
-${ogImage ? `<meta property="og:image" content="${esc(url.origin + mediaUrl(ogImage))}">` : ''}
+${ogImage ? `<meta property="og:image" content="${esc(ogImage.startsWith('https://') ? ogImage : url.origin + mediaUrl(ogImage))}">` : ''}
 <meta name="theme-color" content="#0d0a18">
 ${page.noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">

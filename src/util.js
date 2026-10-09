@@ -55,8 +55,18 @@ export function waNumber(raw) {
 }
 
 /** כתובת URL לתמונה: תמונות דמו הן קבצים סטטיים, העלאות מוגשות מ-R2. */
+// תמונות מקושרות ממאגרים חינמיים (Pexels / Unsplash). חייבים להופיע גם ב-img-src של ה-CSP.
+export const EXTERNAL_IMAGE_HOSTS = ['https://images.pexels.com', 'https://images.unsplash.com'];
+export const EXTERNAL_IMAGE_RE = /^https:\/\/images\.(pexels|unsplash)\.com\/[\w\-./?=&%]+$/;
+
+/** מפתח תמונה תקין: העלאה ל-R2, קובץ דמו סטטי, או קישור ממאגר מותר. */
+export function isValidImageKey(k, uploadRe) {
+  return uploadRe.test(k) || /^demo\/[\w.-]+$/.test(k) || (k.length <= 400 && EXTERNAL_IMAGE_RE.test(k));
+}
+
 export function mediaUrl(key) {
   if (!key) return '';
+  if (key.startsWith('https://')) return key;
   if (key.startsWith('demo/')) return '/' + key;
   return '/media/' + key;
 }
