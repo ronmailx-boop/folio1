@@ -114,7 +114,7 @@ ${s['contact.address'] ? `<li>${ICONS.pin}<span>${esc(s['contact.address'])}</sp
 ${hours ? `<div class="footer-hours"><p class="footer-title">שעות פעילות</p>${paragraphs(hours)}</div>` : ''}
 </div>
 <div class="container footer-bottom">
-<p>© ${year} ${esc(name)} · <a href="/accessibility">הצהרת נגישות</a></p>
+<p>© ${year} ${esc(name)} · <a href="/accessibility">הצהרת נגישות</a> · <a href="/admin/" rel="nofollow">כניסת מנהל</a></p>
 ${showCredit ? `<p class="credit"><a href="${esc(config.creditUrl)}" rel="noopener" target="_blank">${esc(config.creditText)}</a></p>` : ''}
 </div>
 </footer>`;

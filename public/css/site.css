@@ -269,6 +269,7 @@ p { margin: 0 0 1em; }
 .social a:hover { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 .footer-bottom { border-top: 1px solid var(--line); margin-top: 32px; padding-top: 20px; display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 0.9rem; }
 .footer-bottom p { margin: 0; }
+.footer-bottom a { white-space: nowrap; }
 .credit { margin-inline-start: auto !important; }
 
 /* ---------- וואטסאפ צף ---------- */
