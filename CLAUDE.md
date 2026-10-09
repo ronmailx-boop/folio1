@@ -6,6 +6,9 @@
 כל 9 השלבים מהפרומט המקורי הושלמו ונבדקו מקומית (`wrangler dev`, D1 ו-R2 מקומיים, Playwright).
 **עדיין לא נפרס ל-Cloudflare אמיתי**: צריך ש-Ron יוסיף Secrets ויריץ `setup.yml` (ראו README).
 
+## תצוגה מקדימה ב-GitHub Pages (זמני)
+`pages-preview.yml` מריץ `wrangler dev` ב-CI עם נתוני הדמו, ו-`scripts/build-static.mjs` שומר עותק סטטי של הדפים הציבוריים: מוסיף את base path (`/folio1`), מחליף את הטופס בהודעה ומוסיף פס "תצוגה מקדימה". הסיבה: ל-Ron אין עדיין Secrets של Cloudflare, והקונטיינר של Claude לא יכול לפרוס Worker (אין טוקן, וה-MCP של Cloudflare לא כולל פריסה). אחרי ההקמה ב-Cloudflare אפשר לכבות את ה-workflow.
+
 ## ארכיטקטורה (סגורה)
 - Worker אחד (`src/index.js`) + D1 (`DB`) + R2 (`MEDIA`) + Static Assets (`public/`, binding `ASSETS`).
 - JS רגיל, ES modules, בלי build. התלות היחידה: `wrangler` (devDependency).

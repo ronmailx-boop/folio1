@@ -7,6 +7,8 @@
 - לוח ניהול ב-`/admin/`: טקסטים, גלריה, שירותים, הודעות מהטופס, הגדרות העסק (כולל צבע ראשי ולוגו), והחלפת סיסמה.
 - SEO: כותרת ותיאור לכל דף, Open Graph, `sitemap.xml` ו-`robots.txt` שנוצרים אוטומטית.
 
+**תצוגה מקדימה זמנית:** עד שהאתר יוקם ב-Cloudflare, ה-workflow **Pages preview** מפרסם עותק סטטי של האתר הציבורי (עם נתוני הדמו) ב-<https://ronmailx-boop.github.io/folio1/>. הטופס ולוח הניהול לא עובדים שם. אם הפרסום נכשל, ודאו ש-**Settings** ← **Pages** ← **Source** מוגדר ל-**GitHub Actions**. אחרי ההקמה ב-Cloudflare אפשר לכבות אותו (Actions ← Pages preview ← ⋯ ← Disable workflow).
+
 ---
 
 ## הקמה מהנייד, צעד אחר צעד
