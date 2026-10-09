@@ -3,7 +3,7 @@ import { config, FIELD_BY_KEY, isDemo, limits } from '../config.js';
 import { getSettings, setSettings, bumpCacheVersion } from '../db.js';
 import { readJson, isDemoUser } from '../auth.js';
 import { deleteMedia, MEDIA_KEY_RE } from '../media.js';
-import { json, jsonError, isHexColor, safeUrl } from '../util.js';
+import { json, jsonError, isHexColor, safeUrl, isValidImageKey } from '../util.js';
 
 export async function bootstrap(env, url, session) {
   const [settings, counts] = await Promise.all([
@@ -51,7 +51,7 @@ export function cleanField(field, raw) {
     case 'tel':
       return /^[\d+\-\s()]{6,40}$/.test(v) ? [v, null] : [null, `"${field.label}": מספר טלפון לא תקין.`];
     case 'image':
-      return MEDIA_KEY_RE.test(v) || /^demo\/[\w.-]+$/.test(v) ? [v, null] : [null, `"${field.label}": תמונה לא תקינה.`];
+      return isValidImageKey(v, MEDIA_KEY_RE) ? [v, null] : [null, `"${field.label}": תמונה לא תקינה.`];
     default:
       return [v, null];
   }

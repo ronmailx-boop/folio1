@@ -42,8 +42,8 @@ export const DEMO_SETTINGS = {
   'about.title': 'נעים להכיר, סטודיו אור',
   'about.text':
     'סטודיו אור נולד מתוך אהבה לאור טבעי ולסיפורים טובים. אנחנו צוות קטן של צלמים ומעצבים שמאמינים שכל עסק ראוי לתדמית מקצועית.\n\nאנחנו עובדים בסטודיו מאובזר בתל אביב וגם בשטח, אצלכם בעסק או באירוע. בכל פרויקט אנחנו מקשיבים קודם, מתכננים יחד, ורק אז לוחצים על הכפתור.\n\nהלקוחות שלנו נשארים איתנו לאורך שנים, וזה הדבר שהכי מרגש אותנו.',
-  'about.image': 'demo/about.svg',
-  'about.image_alt': 'איור מופשט של מצלמה וצבעים סגולים',
+  'about.image': 'https://images.pexels.com/photos/13884541/pexels-photo-13884541.jpeg?auto=compress&cs=tinysrgb&w=1600',
+  'about.image_alt': 'צלם מכוון תאורה לפני צילום בסטודיו',
   'seo.about.title': 'אודות סטודיו אור',
   'seo.about.description': 'הכירו את הצוות של סטודיו אור: צלמים ומעצבים עם ניסיון של עשור.',
 
@@ -72,25 +72,48 @@ export const DEMO_SETTINGS = {
   'footer.text': 'סטודיו לצילום ועיצוב לעסקים ולאנשים פרטיים.',
 };
 
+// תמונות הדמו: צילומים אמיתיים מ-Pexels (חינם לשימוש מסחרי, בלי חובת קרדיט: https://www.pexels.com/license/).
+// מקושרים ישירות מהמאגר ומוקטנים שם (w=1600). אם קישור יפסיק לעבוד, האתר מציג במקומו איור דמו.
+// השמות בהערות הם שמות התמונות ב-Pexels, למקרה שצריך להחליף.
+const pexels = (id) => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=1600`;
+
+export const DEMO_IMAGES = {
+  portraitNeon: pexels(10040315), // Portrait of a Woman with Neon Light in Background
+  portraitBw: pexels(12562547), // Dark Portrait of a Woman with Her Hand on Her Cheek
+  perfume: pexels(29805437), // Elegant Black Perfume Bottle on a Dark Background
+  concert: pexels(18447992), // Lights over Crowd on Concert
+  concertStage: pexels(1387174), // Crowd in Front of Blue and Orange Stage during a Concert at Night
+  purpleMan: pexels(11032535), // Man Posing in Purple Light
+  tablet: pexels(9414330), // A Person Drawing on a Graphics Tablet
+  profileDark: pexels(19303043), // Woman in a Dark Room Looking Up in Profile
+  brand: pexels(7598017), // Pictures of Business Brand and Design
+  neonWoman: pexels(12230081), // Portrait of a Woman in Neon Light
+  studioLights: pexels(25526512), // Photography Studio Lighting Equipment
+  editing: pexels(7014918), // Anonymous woman editing photo on laptop
+  settingLight: pexels(13884541), // Man Setting Video Light for Photo Shoot
+};
+const I = DEMO_IMAGES;
+
 export const DEMO_SERVICES = [
-  ['צילומי פורטרט', 'צילומי תדמית אישיים לעסק, ללינקדאין ולרשתות, בסטודיו או באור טבעי בחוץ.', 'demo/gallery-2.svg', 'החל מ-₪450'],
-  ['צילומי מוצר', 'צילום מוצרים על רקע לבן או בהעמדה מעוצבת, מוכן לחנות אונליין ולקטלוג.', 'demo/gallery-3.svg', 'החל מ-₪350'],
-  ['עיצוב לוגו', 'לוגו מקורי שמבטא את אופי העסק, כולל שלוש הצעות וסבבי תיקונים.', 'demo/gallery-4.svg', 'החל מ-₪1,200'],
-  ['מיתוג לעסק', 'שפה עיצובית מלאה: לוגו, צבעים, פונטים, כרטיס ביקור ותבניות לרשתות.', 'demo/gallery-8.svg', ''],
-  ['עריכת תמונות', 'תיקוני צבע, ריטוש עדין והכנת תמונות לדפוס או לרשת.', 'demo/gallery-5.svg', 'החל מ-₪25 לתמונה'],
-  ['צילומי אירועים', 'תיעוד אירועים פרטיים ועסקיים: כנסים, השקות, ימי הולדת ובר מצווה.', 'demo/gallery-7.svg', ''],
+  ['צילומי פורטרט', 'צילומי תדמית אישיים לעסק, ללינקדאין ולרשתות, בסטודיו או באור טבעי בחוץ.', I.portraitBw, 'החל מ-₪450'],
+  ['צילומי מוצר', 'צילום מוצרים על רקע לבן או בהעמדה מעוצבת, מוכן לחנות אונליין ולקטלוג.', I.perfume, 'החל מ-₪350'],
+  ['עיצוב לוגו', 'לוגו מקורי שמבטא את אופי העסק, כולל שלוש הצעות וסבבי תיקונים.', I.tablet, 'החל מ-₪1,200'],
+  ['מיתוג לעסק', 'שפה עיצובית מלאה: לוגו, צבעים, פונטים, כרטיס ביקור ותבניות לרשתות.', I.brand, ''],
+  ['עריכת תמונות', 'תיקוני צבע, ריטוש עדין והכנת תמונות לדפוס או לרשת.', I.editing, 'החל מ-₪25 לתמונה'],
+  ['צילומי אירועים', 'תיעוד אירועים פרטיים ועסקיים: כנסים, השקות, ימי הולדת ובר מצווה.', I.concertStage, ''],
 ];
 
+// שלוש הראשונות מוצגות בפס שמתחת לכותרת בדף הבית
 export const DEMO_GALLERY = [
-  ['demo/gallery-1.svg', 'שקיעה סגולה מעל גבעות', 'שקיעה בגבעות'],
-  ['demo/gallery-2.svg', 'צללית של דמות על רקע סגול', 'פורטרט'],
-  ['demo/gallery-3.svg', 'בקבוק מוצר על רקע בהיר', 'צילום מוצר'],
-  ['demo/gallery-4.svg', 'סמל גיאומטרי בעיגול סגול', 'עיצוב לוגו'],
-  ['demo/gallery-5.svg', 'גלים צבעוניים על רקע כהה', 'אמנות מופשטת'],
-  ['demo/gallery-6.svg', 'איור של מצלמה', 'הציוד שלנו'],
-  ['demo/gallery-7.svg', 'אורות מטושטשים באירוע', 'אירוע ערב'],
-  ['demo/gallery-8.svg', 'בניינים בצורות גיאומטריות', 'אדריכלות'],
-  ['demo/gallery-9.svg', 'פרחים מאוירים בגווני סגול', 'פרחים'],
+  [I.portraitNeon, 'פורטרט של אישה עם טבעת אור ניאון ברקע', 'פורטרט בניאון'],
+  [I.perfume, 'בקבוק בושם שחור על רקע כהה', 'צילום מוצר'],
+  [I.concert, 'קהל בהופעה תחת אורות לייזר', 'הופעה חיה'],
+  [I.purpleMan, 'גבר מצולם בתאורה סגולה דרמטית', 'פורטרט בסגול'],
+  [I.tablet, 'מעצבת מאיירת על טאבלט גרפי', 'עיצוב בתהליך'],
+  [I.profileDark, 'אישה בפרופיל בחדר חשוך עם אור צד', 'פורטרט באור צד'],
+  [I.brand, 'חומרי מיתוג ועיצוב לעסק', 'מיתוג'],
+  [I.neonWoman, 'אישה בתאורת ניאון', 'לילה בעיר'],
+  [I.studioLights, 'ציוד תאורה בסטודיו צילום', 'הסטודיו שלנו'],
 ];
 
 export const DEMO_MESSAGES = [

@@ -3,9 +3,9 @@ import { limits } from '../config.js';
 import { listServices, listGallery, bumpCacheVersion } from '../db.js';
 import { readJson } from '../auth.js';
 import { deleteMedia, MEDIA_KEY_RE } from '../media.js';
-import { json, jsonError } from '../util.js';
+import { json, jsonError, isValidImageKey } from '../util.js';
 
-const validImage = (k) => k === '' || k === null || MEDIA_KEY_RE.test(k) || /^demo\/[\w.-]+$/.test(k);
+const validImage = (k) => k === '' || k === null || isValidImageKey(k, MEDIA_KEY_RE);
 
 function str(v, max, label, { required = false, multiline = false } = {}) {
   let s = String(v ?? '').replace(/\r\n/g, '\n');

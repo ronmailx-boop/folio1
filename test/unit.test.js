@@ -82,3 +82,16 @@ test('sniffImage ו-MEDIA_KEY_RE', () => {
   assert.ok(MEDIA_KEY_RE.test('u/0123456789abcdef0123456789abcdef.webp'));
   assert.ok(!MEDIA_KEY_RE.test('u/../secret'));
 });
+
+test('isValidImageKey: העלאות, דמו וקישורים ממאגרים מותרים בלבד', async () => {
+  const { isValidImageKey } = await import('../src/util.js');
+  const ok = (k) => isValidImageKey(k, MEDIA_KEY_RE);
+  assert.ok(ok('u/0123456789abcdef0123456789abcdef.webp'));
+  assert.ok(ok('demo/about.svg'));
+  assert.ok(ok('https://images.pexels.com/photos/1/pexels-photo-1.jpeg?auto=compress&w=1600'));
+  assert.ok(ok('https://images.unsplash.com/photo-123-abc?w=1600&q=80'));
+  assert.ok(!ok('https://evil.com/x.jpg'));
+  assert.ok(!ok('https://images.pexels.com.evil.com/x.jpg'));
+  assert.ok(!ok('http://images.pexels.com/x.jpg'));
+  assert.ok(!ok('https://images.pexels.com/x"onerror="alert(1)'));
+});
